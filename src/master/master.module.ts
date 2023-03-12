@@ -26,6 +26,13 @@ import { GST } from './entities/gst.entity';
 import { YarnMasterController } from './yarn-master/yarn-master.controller';
 import { YarnMasterService } from './yarn-master/yarn-master.service';
 import { YarnMaster } from './entities/yarn.entity';
+import { Unit } from './entities/unit.entity';
+import { Location } from './entities/location.entity';
+import { UnitController } from './unit/unit.controller';
+import { LocationController } from './location/location.controller';
+import { UserModule } from 'src/user/user.module';
+import { LocationService } from './location/location.service';
+import { UnitService } from './unit/unit.service';
 
 const EntityList: EntityClassOrSchema[] = [
   YarnType,
@@ -36,10 +43,12 @@ const EntityList: EntityClassOrSchema[] = [
   GST,
   HSN,
   YarnMaster,
+  Unit,
+  Location,
 ]
 
 @Module({
-  imports: [TypeOrmModule.forFeature(EntityList)],
+  imports: [TypeOrmModule.forFeature(EntityList), UserModule],
   controllers: [
     MasterController,
     YarnTypeController,
@@ -50,6 +59,8 @@ const EntityList: EntityClassOrSchema[] = [
     HsnController,
     GstController,
     YarnMasterController,
+    UnitController,
+    LocationController,
   ],
   providers: [
     YarnTypeService,
@@ -59,7 +70,9 @@ const EntityList: EntityClassOrSchema[] = [
     YarnGroupService,
     HsnService,
     GstService,
-    YarnMasterService
+    YarnMasterService,
+    UnitService,
+    LocationService,
   ]
 })
 export class MasterModule { }
