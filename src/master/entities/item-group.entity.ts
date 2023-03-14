@@ -2,33 +2,19 @@ import { Exclude } from "class-transformer";
 import { User } from "src/user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity({ name: 'location' })
-export class Location {
+@Entity({ name: 'item-group' })
+export class ItemGroup {
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
         type: 'varchar',
-        length: 50,
-        nullable: false,
+        length: 20,
         unique: true,
-    })
-    location_name: string;
-
-    @Column({
-        type: 'varchar',
-        length: 50,
         nullable: false,
     })
-    factory_name: string;
-
-    @Column({
-        type: 'varchar',
-        length: 50,
-        nullable: false,
-    })
-    factory_city: string;
+    name: string;
 
     @Exclude()
     @Column({

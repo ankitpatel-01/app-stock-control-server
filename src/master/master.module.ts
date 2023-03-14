@@ -33,6 +33,9 @@ import { LocationController } from './location/location.controller';
 import { UserModule } from 'src/user/user.module';
 import { LocationService } from './location/location.service';
 import { UnitService } from './unit/unit.service';
+import { ItemGroupController } from './item-group/item-group.controller';
+import { ItemGroupService } from './item-group/item-group.service';
+import { ItemGroup } from './entities/item-group.entity';
 
 const EntityList: EntityClassOrSchema[] = [
   YarnType,
@@ -45,6 +48,7 @@ const EntityList: EntityClassOrSchema[] = [
   YarnMaster,
   Unit,
   Location,
+  ItemGroup,
 ]
 
 @Module({
@@ -61,6 +65,7 @@ const EntityList: EntityClassOrSchema[] = [
     YarnMasterController,
     UnitController,
     LocationController,
+    ItemGroupController,
   ],
   providers: [
     YarnTypeService,
@@ -73,6 +78,7 @@ const EntityList: EntityClassOrSchema[] = [
     YarnMasterService,
     UnitService,
     LocationService,
+    ItemGroupService,
   ]
 })
 export class MasterModule { }

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataFound, NoDataFound, PerPageLimit } from 'src/shared/constant/constant';
 import { ER_DUP_ENTRY, ER_DUP_ENTRY_NO } from 'src/shared/constant/error.const';
 import { ResponseDto } from 'src/shared/dto/response.dto';
+import { User } from 'src/user/entities/user.entity';
 import { UsersService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Location } from '../entities/location.entity';
@@ -79,27 +80,48 @@ export class LocationService {
     }
 
     async createLocation(createLocationDto: CreateLocationDto, userId: number): Promise<ResponseDto<null>> {
-        const user = await this._userService.findUserById(userId);
-        try {
-            const newLocation: Location = await this._locationRepository.create({
-                location_name: createLocationDto.location_name,
-                factory_name: createLocationDto.factory_name,
-                factory_city: createLocationDto.factory_city,
-                user,
-            });
-            const respone = await this._locationRepository.save(newLocation);
 
-            if (respone) {
-                return {
-                    message: "new location create sucessfully",
-                    response: null,
+        const existingLocation: Location = await this.findLocationByName(createLocationDto.location_name);
+        const user: User = await this._userService.findUserById(userId);
+        if (existingLocation) {
+            if (existingLocation.isActive) {
+                throw new ConflictException("Duplicate entry Location code already exists");
+            } else {
+                existingLocation.isActive = 1;
+                existingLocation.factory_city = createLocationDto.factory_city;
+                existingLocation.factory_name = createLocationDto.factory_name;
+                existingLocation.user = user;
+                const respone = await this._locationRepository.save(existingLocation);
+                if (respone) {
+                    return {
+                        message: "new location create sucessfully",
+                        response: null,
+                    }
                 }
             }
-        } catch (err) {
-            if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-                throw new ConflictException("Duplicate entry location already exists")
+
+        } else {
+            try {
+                const newLocation: Location = await this._locationRepository.create({
+                    location_name: createLocationDto.location_name,
+                    factory_name: createLocationDto.factory_name,
+                    factory_city: createLocationDto.factory_city,
+                    user,
+                });
+                const respone = await this._locationRepository.save(newLocation);
+
+                if (respone) {
+                    return {
+                        message: "new location create sucessfully",
+                        response: null,
+                    }
+                }
+            } catch (err) {
+                if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
+                    throw new ConflictException("Duplicate entry location already exists")
+                }
+                throw new InternalServerErrorException(err)
             }
-            throw new InternalServerErrorException(err)
         }
     }
 
@@ -163,6 +185,14 @@ export class LocationService {
         }
 
         throw new NotFoundException(`location with id ${id} not found`);
+    }
+
+    async findLocationByName(name: string): Promise<Location> {
+        return await this._locationRepository.findOne({
+            where: {
+                location_name: name,
+            }
+        })
     }
 
 }
