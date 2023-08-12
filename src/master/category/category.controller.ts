@@ -6,8 +6,11 @@ import { Category } from '../entities/category.entity';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/category-create.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/category')
+@ApiTags('Yarn Master')
+@ApiSecurity('access-key')
 export class CategoryController {
     constructor(private _categoryService: CategoryService) { }
 

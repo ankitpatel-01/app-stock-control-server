@@ -6,7 +6,6 @@ import { ResponseDto } from 'src/shared/dto/response.dto';
 
 import { Repository } from 'typeorm';
 import { Category } from '../entities/category.entity';
-import { Color } from '../entities/color.entity';
 import { CreateCategoryDto } from './dto/category-create.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 

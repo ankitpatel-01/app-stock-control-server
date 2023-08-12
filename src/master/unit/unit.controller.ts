@@ -6,8 +6,11 @@ import { Unit } from '../entities/unit.entity';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
 import { UnitService } from './unit.service';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/unit')
+@ApiTags('Miscellaneous Master')
+@ApiSecurity('access-key')
 export class UnitController {
 
     constructor(private _unitService: UnitService) { }

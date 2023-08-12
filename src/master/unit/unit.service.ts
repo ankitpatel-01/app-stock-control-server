@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataFound, NoDataFound, PerPageLimit } from 'src/shared/constant/constant';
 import { ER_DUP_ENTRY, ER_DUP_ENTRY_NO } from 'src/shared/constant/error.const';
 import { ResponseDto } from 'src/shared/dto/response.dto';
-import { User } from 'src/user/entities/user.entity';
 import { UsersService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Unit } from '../entities/unit.entity';
@@ -15,8 +14,7 @@ export class UnitService {
 
     constructor(
         @InjectRepository(Unit)
-        private _unitRepository: Repository<Unit>,
-        private _userService: UsersService) { }
+        private _unitRepository: Repository<Unit>) { }
 
     async getAllUnit(search: string = null): Promise<ResponseDto<Unit[]>> {
         try {
@@ -82,7 +80,6 @@ export class UnitService {
 
     async createUnit(createUnitDto: CreateUnitDto, userId: number): Promise<ResponseDto<null>> {
         const existingUnit: Unit = await this.findUnitByName(createUnitDto.unit_name);
-        const user: User = await this._userService.findUserById(userId);
         if (existingUnit) {
             if (existingUnit.isActive) {
                 throw new ConflictException("Duplicate entry unit code already exists");
@@ -90,7 +87,6 @@ export class UnitService {
                 existingUnit.isActive = 1;
                 existingUnit.unit_name = createUnitDto.unit_name;
                 existingUnit.unit_desc = createUnitDto.unit_desc;
-                existingUnit.user = user;
                 const respone = await this._unitRepository.save(existingUnit);
                 if (respone) {
                     return {
@@ -106,7 +102,6 @@ export class UnitService {
                 const newUnit: Unit = await this._unitRepository.create({
                     unit_name: createUnitDto.unit_name,
                     unit_desc: createUnitDto.unit_desc,
-                    user,
                 });
                 const respone = await this._unitRepository.save(newUnit);
 
@@ -127,11 +122,9 @@ export class UnitService {
     }
 
     async updateUnit(updateUnitDto: UpdateUnitDto, userId: number): Promise<ResponseDto<null>> {
-        const user = await this._userService.findUserById(userId);
         const unit: Unit = await this.findUnitById(updateUnitDto.id);
         unit.unit_desc = updateUnitDto.unit_desc;
         unit.unit_name = updateUnitDto.unit_name;
-        unit.user = user;
         unit.isActive = 1;
         try {
             const respone = await this._unitRepository.save(unit);
@@ -152,12 +145,10 @@ export class UnitService {
     async removeUnit(id: number, userId: number): Promise<ResponseDto<null>> {
 
         const unit = await this.findUnitById(id)
-        const user = await this._userService.findUserById(userId);
 
         if (unit) {
             const result = await this._unitRepository.save({
                 id,
-                user,
                 isActive: 0
             })
 

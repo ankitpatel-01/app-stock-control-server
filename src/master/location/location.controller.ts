@@ -6,8 +6,11 @@ import { Location } from '../entities/location.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { LocationService } from './location.service';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/location')
+@ApiTags('Miscellaneous Master')
+@ApiSecurity('access-key')
 export class LocationController {
 
     constructor(private _locationService: LocationService) { }

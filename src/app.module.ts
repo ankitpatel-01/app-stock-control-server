@@ -7,13 +7,17 @@ import { MasterModule } from './master/master.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AtGuard } from './auth/guards';
+import { CompanyModule } from './company/company.module';
+import { MiscModule } from './misc/misc.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
     MasterModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    CompanyModule,
+    MiscModule,
   ],
   controllers: [],
   providers: [

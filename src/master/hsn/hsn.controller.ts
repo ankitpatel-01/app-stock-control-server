@@ -7,8 +7,11 @@ import { CreateHsnDto } from './dto/create-hsn.dto';
 import { QueryHsnDto } from './dto/get-hsn-query.dto';
 import { UpdateHsnDto } from './dto/update-hsn.dto';
 import { HsnService } from './hsn.service';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/hsn')
+@ApiTags('Miscellaneous Master')
+@ApiSecurity('access-key')
 export class HsnController {
 
     constructor(private _hsnService: HsnService) { }

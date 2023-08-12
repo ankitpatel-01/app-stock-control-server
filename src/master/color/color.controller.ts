@@ -6,8 +6,11 @@ import { Color } from '../entities/color.entity';
 import { ColorService } from './color.service';
 import { CreateColorDto } from './dto/create-color.dto';
 import { UpdateColorDto } from './dto/update-color.dto';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/color')
+@ApiTags('Yarn Master')
+@ApiSecurity('access-key')
 export class ColorController {
     constructor(private _colorService: ColorService) { }
 

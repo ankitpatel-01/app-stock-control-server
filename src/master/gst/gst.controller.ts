@@ -6,8 +6,11 @@ import { GST } from '../entities/gst.entity';
 import { CreateGstDto } from './dto/create-gst.dto';
 import { UpdateGstDto } from './dto/update-gst.dto';
 import { GstService } from './gst.service';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/gst')
+@ApiTags('Miscellaneous Master')
+@ApiSecurity('access-key')
 export class GstController {
     constructor(private _gstService: GstService) { }
 

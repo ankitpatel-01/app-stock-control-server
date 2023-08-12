@@ -1,5 +1,7 @@
 import { Exclude } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Company } from 'src/company/entities/company-master.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm';
+import { UserProfile } from './user-profile.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -13,14 +15,6 @@ export class User {
         nullable: false,
     })
     name: string;
-
-    @Column({
-        name: 'full_name',
-        type: 'varchar',
-        length: 60,
-        default: null
-    })
-    full_name: string;
 
     @Column({
         name: 'username',
@@ -55,4 +49,21 @@ export class User {
         default: 1
     })
     isActive: number;
+
+    @ManyToOne(() => Company, company => company.users)
+    @JoinColumn({ name: "company_id" })
+    company: Company;
+
+    @OneToOne(() => UserProfile, { cascade: true })
+    @JoinColumn({ name: "profile_id" })
+    profile: UserProfile;
+
+
+    @Exclude()
+    @CreateDateColumn()
+    created_at: Date; // Creation date
+
+    @Exclude()
+    @UpdateDateColumn()
+    updated_at: Date; // Last updated date 
 }

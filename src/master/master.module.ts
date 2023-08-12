@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
 import { Quality } from './entities/quality.entity';
 import { YarnType } from './entities/yarn-type.entity';
-import { MasterController } from './master.controller';
 import { QualityController } from './quality/quality.controller';
 import { QualityService } from './quality/quality.service';
 import { YarnTypeController } from './yarn-type/yarn-type.controller';
@@ -54,7 +53,6 @@ const EntityList: EntityClassOrSchema[] = [
 @Module({
   imports: [TypeOrmModule.forFeature(EntityList), UserModule],
   controllers: [
-    MasterController,
     YarnTypeController,
     QualityController,
     ColorController,

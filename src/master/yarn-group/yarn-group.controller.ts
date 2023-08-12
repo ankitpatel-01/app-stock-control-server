@@ -6,8 +6,11 @@ import { YarnGroup } from '../entities/yarn-group.entity';
 import { CreateYarnGroupDto } from './dto/create-yarn-grop.dto';
 import { UpdateYarnGroupDto } from './dto/update-yarn-group.dto';
 import { YarnGroupService } from './yarn-group.service';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/yarn-group')
+@ApiTags('Yarn Master')
+@ApiSecurity('access-key')
 export class YarnGroupController {
     constructor(private _yarnGroupService: YarnGroupService) { }
 

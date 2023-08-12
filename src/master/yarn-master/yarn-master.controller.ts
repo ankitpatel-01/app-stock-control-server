@@ -6,8 +6,11 @@ import { YarnMaster } from '../entities/yarn.entity';
 import { CreateYarnDto } from './dto/create-yarn.dto';
 import { UpdateYarnDto } from './dto/update-yarn.dto';
 import { YarnMasterService } from './yarn-master.service';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('master/yarn-master')
+@ApiTags('Yarn Master')
+@ApiSecurity('access-key')
 export class YarnMasterController {
 
     constructor(private _yarnMasterService: YarnMasterService) { }

@@ -1,20 +1,19 @@
 import { Exclude } from "class-transformer";
-import { User } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity({ name: 'item-group' })
-export class ItemGroup {
+@Entity({ name: 'company_type_master' })
+export class CompanyType {
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
         type: 'varchar',
-        length: 20,
+        length: 50,
         unique: true,
         nullable: false,
     })
-    name: string;
+    type_name: string;
 
     @Exclude()
     @Column({
@@ -29,6 +28,6 @@ export class ItemGroup {
 
     @Exclude()
     @UpdateDateColumn()
-    updated_at: Date; // Last updated date
+    updated_at: Date; // Last updated date 
 
 }

@@ -5,9 +5,12 @@ import { ResponseDto } from 'src/shared/dto/response.dto';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { RtGuard } from './guards/rt.guard'; 0
+import { RtGuard } from './guards/rt.guard';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('Auth Controller')
+@ApiSecurity('access-key')
 export class AuthController {
     constructor(private _authService: AuthService) { }
 

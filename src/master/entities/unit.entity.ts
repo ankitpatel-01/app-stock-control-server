@@ -38,8 +38,4 @@ export class Unit {
     @UpdateDateColumn()
     updated_at: Date; // Last updated date
 
-    @ManyToOne(type => User, user => user.id)
-    @JoinColumn()
-    user: User;
-
 }

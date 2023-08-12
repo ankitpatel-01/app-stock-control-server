@@ -3,8 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataFound, NoDataFound, PerPageLimit } from 'src/shared/constant/constant';
 import { ER_DUP_ENTRY, ER_DUP_ENTRY_NO } from 'src/shared/constant/error.const';
 import { ResponseDto } from 'src/shared/dto/response.dto';
-import { User } from 'src/user/entities/user.entity';
-import { UsersService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Location } from '../entities/location.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
@@ -15,8 +13,7 @@ export class LocationService {
 
     constructor(
         @InjectRepository(Location)
-        private _locationRepository: Repository<Location>,
-        private _userService: UsersService) { }
+        private _locationRepository: Repository<Location>) { }
 
     async getAllLocation(search: string = null): Promise<ResponseDto<Location[]>> {
         try {
@@ -82,7 +79,6 @@ export class LocationService {
     async createLocation(createLocationDto: CreateLocationDto, userId: number): Promise<ResponseDto<null>> {
 
         const existingLocation: Location = await this.findLocationByName(createLocationDto.location_name);
-        const user: User = await this._userService.findUserById(userId);
         if (existingLocation) {
             if (existingLocation.isActive) {
                 throw new ConflictException("Duplicate entry Location code already exists");
@@ -90,7 +86,6 @@ export class LocationService {
                 existingLocation.isActive = 1;
                 existingLocation.factory_city = createLocationDto.factory_city;
                 existingLocation.factory_name = createLocationDto.factory_name;
-                existingLocation.user = user;
                 const respone = await this._locationRepository.save(existingLocation);
                 if (respone) {
                     return {
@@ -106,7 +101,6 @@ export class LocationService {
                     location_name: createLocationDto.location_name,
                     factory_name: createLocationDto.factory_name,
                     factory_city: createLocationDto.factory_city,
-                    user,
                 });
                 const respone = await this._locationRepository.save(newLocation);
 
@@ -126,12 +120,10 @@ export class LocationService {
     }
 
     async updateLocation(updateLocationDto: UpdateLocationDto, userId: number): Promise<ResponseDto<null>> {
-        const user = await this._userService.findUserById(userId);
         const location: Location = await this.findLocationById(updateLocationDto.id);
         location.factory_city = updateLocationDto.factory_city;
         location.factory_name = updateLocationDto.factory_name;
         location.location_name = updateLocationDto.location_name;
-        location.user = user;
         location.isActive = 1;
         try {
             const respone = await this._locationRepository.save(location);
@@ -152,12 +144,10 @@ export class LocationService {
     async removeLocation(id: number, userId: number): Promise<ResponseDto<null>> {
 
         const location = await this.findLocationById(id)
-        const user = await this._userService.findUserById(userId);
 
         if (location) {
             const result = await this._locationRepository.save({
                 id,
-                user,
                 isActive: 0
             })
 

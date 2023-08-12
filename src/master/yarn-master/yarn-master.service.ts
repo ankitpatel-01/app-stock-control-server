@@ -35,32 +35,6 @@ export class YarnMasterService {
         private _hsnRespository: Repository<HSN>,
     ) { }
 
-
-    // async getAllYarns(): Promise<YarnMaster[]> {
-    //     try {
-    //         return await this._yarnMasterRespository.find({
-    //             where: {
-    //                 isActive: 1,
-    //                 ...{}
-    //             },
-    //             relations: {
-    //                 yarn_type: true,
-    //                 quality: true,
-    //                 color: true,
-    //                 category: true,
-    //                 group: true,
-    //                 hsn: true,
-    //             },
-    //             order: {
-    //                 id: 'DESC'
-    //             }
-
-    //         })
-    //     } catch (err) {
-    //         return err;
-    //     }
-    // }
-
     async findAllYarn(
         search: string = null,
     ): Promise<ResponseDto<YarnMaster[]>> {
