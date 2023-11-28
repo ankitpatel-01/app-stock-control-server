@@ -48,7 +48,7 @@ const EntityList: EntityClassOrSchema[] = [
   Unit,
   Location,
   ItemGroup,
-]
+];
 
 @Module({
   imports: [TypeOrmModule.forFeature(EntityList), UserModule],
@@ -77,6 +77,6 @@ const EntityList: EntityClassOrSchema[] = [
     UnitService,
     LocationService,
     ItemGroupService,
-  ]
+  ],
 })
-export class MasterModule { }
+export class MasterModule {}

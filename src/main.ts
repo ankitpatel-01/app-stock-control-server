@@ -42,7 +42,7 @@ async function bootstrap() {
         name: 'x-api-key', // This is the name of the key you expect in header
         in: 'header',
       },
-      'access-key' // This is the name to show and used in Swagger
+      'access-key', // This is the name to show and used in Swagger
     )
     .build();
 

@@ -8,17 +8,12 @@ import { UserModule } from 'src/user/user.module';
 import { Company } from './entities/company-master.entity';
 import { CompanyBranch } from './entities/company-branch-master.entity';
 
-
-const EntityList: EntityClassOrSchema[] = [
-  CompanyType,
-  Company,
-  CompanyBranch,
-]
+const EntityList: EntityClassOrSchema[] = [CompanyType, Company, CompanyBranch];
 
 @Module({
   imports: [TypeOrmModule.forFeature(EntityList), UserModule],
   controllers: [CompanyController],
   providers: [CompanyService],
-  exports: [CompanyService]
+  exports: [CompanyService],
 })
-export class CompanyModule { }
+export class CompanyModule {}

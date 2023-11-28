@@ -31,4 +31,4 @@ import { MiscModule } from './misc/misc.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

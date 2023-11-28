@@ -1,4 +1,16 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { PaginateDto } from 'src/shared/dto/pagination.dto';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 
@@ -12,29 +24,33 @@ import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 @ApiTags('Miscellaneous Master')
 @ApiSecurity('access-key')
 export class GstController {
-    constructor(private _gstService: GstService) { }
+  constructor(private _gstService: GstService) {}
 
-    @UseInterceptors(ClassSerializerInterceptor)
-    @Get('')
-    getAllGST(@Query() query: PaginateDto): Promise<ResponseDto<GST[]>> {
-        if (query.page) {
-            return this._gstService.paginateGST(query.page, query.limit, query.search);
-        }
-        return this._gstService.getAllGST(query.search);
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get('')
+  getAllGST(@Query() query: PaginateDto): Promise<ResponseDto<GST[]>> {
+    if (query.page) {
+      return this._gstService.paginateGST(
+        query.page,
+        query.limit,
+        query.search,
+      );
     }
+    return this._gstService.getAllGST(query.search);
+  }
 
-    @Post('create')
-    createGST(@Body() createGSTDto: CreateGstDto): Promise<ResponseDto<null>> {
-        return this._gstService.createGST(createGSTDto);
-    }
+  @Post('create')
+  createGST(@Body() createGSTDto: CreateGstDto): Promise<ResponseDto<null>> {
+    return this._gstService.createGST(createGSTDto);
+  }
 
-    @Put('update')
-    updateGST(@Body() updateGSTDto: UpdateGstDto): Promise<ResponseDto<null>> {
-        return this._gstService.updateGST(updateGSTDto);
-    }
+  @Put('update')
+  updateGST(@Body() updateGSTDto: UpdateGstDto): Promise<ResponseDto<null>> {
+    return this._gstService.updateGST(updateGSTDto);
+  }
 
-    @Delete('remove/:id')
-    removeGST(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
-        return this._gstService.removeGST(id);
-    }
+  @Delete('remove/:id')
+  removeGST(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
+    return this._gstService.removeGST(id);
+  }
 }

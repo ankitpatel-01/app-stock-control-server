@@ -1,5 +1,16 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseInterceptors } from '@nestjs/common';
-import { PaginateDto } from 'src/shared/dto/pagination.dto';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 
 import { HSN } from '../entities/hsn.entity';
@@ -13,30 +24,34 @@ import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 @ApiTags('Miscellaneous Master')
 @ApiSecurity('access-key')
 export class HsnController {
+  constructor(private _hsnService: HsnService) {}
 
-    constructor(private _hsnService: HsnService) { }
-
-    @UseInterceptors(ClassSerializerInterceptor)
-    @Get('')
-    getAllHsn(@Query() query: QueryHsnDto): Promise<ResponseDto<HSN[]>> {
-        if (query.page) {
-            return this._hsnService.paginateHsn(query.page, query.limit, query.search, query.gst);
-        }
-        return this._hsnService.getAllHsn(query.search, query.gst);
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get('')
+  getAllHsn(@Query() query: QueryHsnDto): Promise<ResponseDto<HSN[]>> {
+    if (query.page) {
+      return this._hsnService.paginateHsn(
+        query.page,
+        query.limit,
+        query.search,
+        query.gst,
+      );
     }
+    return this._hsnService.getAllHsn(query.search, query.gst);
+  }
 
-    @Post('create')
-    createHsn(@Body() createHsnDto: CreateHsnDto): Promise<ResponseDto<null>> {
-        return this._hsnService.createHsn(createHsnDto);
-    }
+  @Post('create')
+  createHsn(@Body() createHsnDto: CreateHsnDto): Promise<ResponseDto<null>> {
+    return this._hsnService.createHsn(createHsnDto);
+  }
 
-    @Put('update')
-    updateHsn(@Body() updateHsnDto: UpdateHsnDto): Promise<ResponseDto<null>> {
-        return this._hsnService.updateHsn(updateHsnDto);
-    }
+  @Put('update')
+  updateHsn(@Body() updateHsnDto: UpdateHsnDto): Promise<ResponseDto<null>> {
+    return this._hsnService.updateHsn(updateHsnDto);
+  }
 
-    @Delete('remove/:id')
-    removeHsn(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
-        return this._hsnService.removeHsn(id);
-    }
+  @Delete('remove/:id')
+  removeHsn(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
+    return this._hsnService.removeHsn(id);
+  }
 }

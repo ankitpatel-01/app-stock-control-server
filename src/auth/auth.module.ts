@@ -23,4 +23,4 @@ import { CompanyModule } from 'src/company/company.module';
   providers: [AuthService, AtStrategiest, RtStrategiest],
   exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

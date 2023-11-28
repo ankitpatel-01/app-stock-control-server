@@ -5,13 +5,11 @@ import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-clas
 import { StateMaster } from './entities/state-master.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-const EntityList: EntityClassOrSchema[] = [
-  StateMaster
-]
+const EntityList: EntityClassOrSchema[] = [StateMaster];
 
 @Module({
   imports: [TypeOrmModule.forFeature(EntityList)],
   controllers: [StatesMasterController],
-  providers: [StatesMasterService]
+  providers: [StatesMasterService],
 })
 export class MiscModule {}

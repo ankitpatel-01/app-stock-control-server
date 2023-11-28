@@ -1,4 +1,16 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { PaginateDto } from 'src/shared/dto/pagination.dto';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 
@@ -12,31 +24,35 @@ import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 @ApiTags('Yarn Master')
 @ApiSecurity('access-key')
 export class YarnMasterController {
+  constructor(private _yarnMasterService: YarnMasterService) {}
 
-    constructor(private _yarnMasterService: YarnMasterService) { }
-
-    @UseInterceptors(ClassSerializerInterceptor)
-    @Get('')
-    getAllYarn(@Query() query: PaginateDto): Promise<ResponseDto<YarnMaster[]>> {
-        if (query.page) {
-            return this._yarnMasterService.paginateYarn(query.page, query.limit, query.search);
-        }
-        return this._yarnMasterService.findAllYarn(query.search);
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get('')
+  getAllYarn(@Query() query: PaginateDto): Promise<ResponseDto<YarnMaster[]>> {
+    if (query.page) {
+      return this._yarnMasterService.paginateYarn(
+        query.page,
+        query.limit,
+        query.search,
+      );
     }
+    return this._yarnMasterService.findAllYarn(query.search);
+  }
 
-    @Post('create')
-    createYarn(@Body() yarnCreateDto: CreateYarnDto): Promise<ResponseDto<null>> {
-        return this._yarnMasterService.createYarn(yarnCreateDto);
-    }
+  @Post('create')
+  createYarn(@Body() yarnCreateDto: CreateYarnDto): Promise<ResponseDto<null>> {
+    return this._yarnMasterService.createYarn(yarnCreateDto);
+  }
 
-    @Put('update')
-    updateYarn(@Body() yarnUpdateDto: UpdateYarnDto): Promise<ResponseDto<null>> {
-        return this._yarnMasterService.updateYarn(yarnUpdateDto);
-    }
+  @Put('update')
+  updateYarn(@Body() yarnUpdateDto: UpdateYarnDto): Promise<ResponseDto<null>> {
+    return this._yarnMasterService.updateYarn(yarnUpdateDto);
+  }
 
-    @Delete('remove/:id')
-    removeYarn(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
-        return this._yarnMasterService.removeYarn(id);
-    }
-
+  @Delete('remove/:id')
+  removeYarn(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ResponseDto<null>> {
+    return this._yarnMasterService.removeYarn(id);
+  }
 }

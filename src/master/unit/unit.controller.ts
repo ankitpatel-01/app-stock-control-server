@@ -1,5 +1,17 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseInterceptors } from '@nestjs/common';
-import { GetCurrentUserId, Public } from 'src/common/decorator';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
+import { GetCurrentUserId } from 'src/common/decorator';
 import { PaginateDto } from 'src/shared/dto/pagination.dto';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 import { Unit } from '../entities/unit.entity';
@@ -12,30 +24,42 @@ import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 @ApiTags('Miscellaneous Master')
 @ApiSecurity('access-key')
 export class UnitController {
+  constructor(private _unitService: UnitService) {}
 
-    constructor(private _unitService: UnitService) { }
-
-    @UseInterceptors(ClassSerializerInterceptor)
-    @Get('')
-    getAllUnit(@Query() query: PaginateDto): Promise<ResponseDto<Unit[]>> {
-        if (query.page) {
-            return this._unitService.paginateUnit(query.page, query.limit, query.search);
-        }
-        return this._unitService.getAllUnit(query.search);
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get('')
+  getAllUnit(@Query() query: PaginateDto): Promise<ResponseDto<Unit[]>> {
+    if (query.page) {
+      return this._unitService.paginateUnit(
+        query.page,
+        query.limit,
+        query.search,
+      );
     }
+    return this._unitService.getAllUnit(query.search);
+  }
 
-    @Post('create')
-    createUnit(@Body() createUnitDto: CreateUnitDto, @GetCurrentUserId() userId: number): Promise<ResponseDto<null>> {
-        return this._unitService.createUnit(createUnitDto, userId);
-    }
+  @Post('create')
+  createUnit(
+    @Body() createUnitDto: CreateUnitDto,
+    @GetCurrentUserId() userId: number,
+  ): Promise<ResponseDto<null>> {
+    return this._unitService.createUnit(createUnitDto, userId);
+  }
 
-    @Put('update')
-    updateUnit(@Body() updateUnitDto: UpdateUnitDto, @GetCurrentUserId() userId: number): Promise<ResponseDto<null>> {
-        return this._unitService.updateUnit(updateUnitDto, userId);
-    }
+  @Put('update')
+  updateUnit(
+    @Body() updateUnitDto: UpdateUnitDto,
+    @GetCurrentUserId() userId: number,
+  ): Promise<ResponseDto<null>> {
+    return this._unitService.updateUnit(updateUnitDto, userId);
+  }
 
-    @Delete('remove/:id')
-    removeUnit(@Param('id', ParseIntPipe) id: number, @GetCurrentUserId() userId: number): Promise<ResponseDto<null>> {
-        return this._unitService.removeUnit(id, userId);
-    }
+  @Delete('remove/:id')
+  removeUnit(
+    @Param('id', ParseIntPipe) id: number,
+    @GetCurrentUserId() userId: number,
+  ): Promise<ResponseDto<null>> {
+    return this._unitService.removeUnit(id, userId);
+  }
 }

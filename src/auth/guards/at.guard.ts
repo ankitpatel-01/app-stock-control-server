@@ -24,7 +24,7 @@ export class AtGuard extends AuthGuard('jwt') {
     const request = context.switchToHttp().getRequest();
     const apiKey = request.headers['x-api-key'];
 
-    if (apiKey === "7777") {
+    if (apiKey === '7777') {
       return true;
     }
 
