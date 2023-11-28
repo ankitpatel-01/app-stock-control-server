@@ -28,37 +28,25 @@ export class YarnGroupController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('')
-  getAllYarnGroup(
-    @Query() query: PaginateDto,
-  ): Promise<ResponseDto<YarnGroup[]>> {
+  getAllYarnGroup(@Query() query: PaginateDto): Promise<ResponseDto<YarnGroup[]>> {
     if (query.page) {
-      return this._yarnGroupService.paginateYarnGroup(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._yarnGroupService.paginateYarnGroup(query.page, query.limit, query.search);
     }
     return this._yarnGroupService.getAllYarnGroup(query.search);
   }
 
   @Post('create')
-  createYarnGroup(
-    @Body() createYarnGroupDto: CreateYarnGroupDto,
-  ): Promise<ResponseDto<null>> {
+  createYarnGroup(@Body() createYarnGroupDto: CreateYarnGroupDto): Promise<ResponseDto<null>> {
     return this._yarnGroupService.createYarnGroup(createYarnGroupDto);
   }
 
   @Put('update')
-  UpdateYarnGroup(
-    @Body() updateYarnGroupDto: UpdateYarnGroupDto,
-  ): Promise<ResponseDto<null>> {
+  UpdateYarnGroup(@Body() updateYarnGroupDto: UpdateYarnGroupDto): Promise<ResponseDto<null>> {
     return this._yarnGroupService.updateYarnGroup(updateYarnGroupDto);
   }
 
   @Delete('remove/:id')
-  removeYarnGroup(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<ResponseDto<null>> {
+  removeYarnGroup(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
     return this._yarnGroupService.removeYarnGroup(id);
   }
 }

@@ -23,9 +23,7 @@ export class ColorService {
 
   async getAllColor(search: string = null): Promise<ResponseDto<Color[]>> {
     try {
-      const query = this._colorRepository
-        .createQueryBuilder('c')
-        .where('c.isActive = 1');
+      const query = this._colorRepository.createQueryBuilder('c').where('c.isActive = 1');
 
       if (search) {
         query
@@ -40,8 +38,7 @@ export class ColorService {
       const data: Color[] = await query.getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {
@@ -57,9 +54,7 @@ export class ColorService {
     try {
       let data: Color[], total: number;
 
-      const query = this._colorRepository
-        .createQueryBuilder('c')
-        .where('c.isActive = 1');
+      const query = this._colorRepository.createQueryBuilder('c').where('c.isActive = 1');
 
       if (search) {
         page = 1;
@@ -80,8 +75,7 @@ export class ColorService {
       }
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
         meta: {
           current_page: parseInt(page.toString()),
@@ -95,9 +89,7 @@ export class ColorService {
     }
   }
 
-  async createColor(
-    createColorDto: CreateColorDto,
-  ): Promise<ResponseDto<null>> {
+  async createColor(createColorDto: CreateColorDto): Promise<ResponseDto<null>> {
     try {
       const newColor: Color = this._colorRepository.create({
         color_desc: createColorDto.color_desc,
@@ -114,17 +106,13 @@ export class ColorService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry color description or code already exists',
-        );
+        throw new ConflictException('Duplicate entry color description or code already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }
   }
 
-  async updateColor(
-    updateColorDto: UpdateColorDto,
-  ): Promise<ResponseDto<null>> {
+  async updateColor(updateColorDto: UpdateColorDto): Promise<ResponseDto<null>> {
     const color: Color = await this.findColorById(updateColorDto.id);
     color.color_desc = updateColorDto.color_desc;
     color.color_code = updateColorDto.color_code;
@@ -139,9 +127,7 @@ export class ColorService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry color description or code already exists',
-        );
+        throw new ConflictException('Duplicate entry color description or code already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }

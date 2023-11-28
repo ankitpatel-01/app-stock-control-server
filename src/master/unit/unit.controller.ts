@@ -30,11 +30,7 @@ export class UnitController {
   @Get('')
   getAllUnit(@Query() query: PaginateDto): Promise<ResponseDto<Unit[]>> {
     if (query.page) {
-      return this._unitService.paginateUnit(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._unitService.paginateUnit(query.page, query.limit, query.search);
     }
     return this._unitService.getAllUnit(query.search);
   }

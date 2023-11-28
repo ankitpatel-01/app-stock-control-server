@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StateMaster } from '../entities/state-master.entity';
 import { Repository } from 'typeorm';
@@ -49,9 +45,7 @@ export class StatesMasterService {
    * @throws ConflictException if a duplicate state already exists.
    * @throws InternalServerErrorException for any other errors.
    */
-  async addNewState(
-    createStateDto: CreateStateDto,
-  ): Promise<ResponseDto<null>> {
+  async addNewState(createStateDto: CreateStateDto): Promise<ResponseDto<null>> {
     try {
       const newState: StateMaster = this._stateMasterRepository.create({
         name: createStateDto.name,

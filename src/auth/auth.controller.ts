@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { GetCurrentUser, GetCurrentUserId, Public } from 'src/common/decorator';
 import { Tokens } from 'src/common/types';
 import { ResponseDto } from 'src/shared/dto/response.dto';
@@ -30,9 +23,7 @@ export class AuthController {
 
   @Public()
   @Post('/register')
-  async register(
-    @Body() createUserDto: CreateUserDto,
-  ): Promise<ResponseDto<null>> {
+  async register(@Body() createUserDto: CreateUserDto): Promise<ResponseDto<null>> {
     return this._authService.register(createUserDto);
   }
 

@@ -31,33 +31,23 @@ export class QualityController {
   @ApiSecurity('access-key')
   getAllQuality(@Query() query: PaginateDto): Promise<ResponseDto<Quality[]>> {
     if (query.page) {
-      return this._qualityService.paginateQuality(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._qualityService.paginateQuality(query.page, query.limit, query.search);
     }
     return this._qualityService.getAllQuality(query.search);
   }
 
   @Post('create')
-  createQuality(
-    @Body() createQualityDto: CreateQualityDto,
-  ): Promise<ResponseDto<null>> {
+  createQuality(@Body() createQualityDto: CreateQualityDto): Promise<ResponseDto<null>> {
     return this._qualityService.createQuality(createQualityDto);
   }
 
   @Put('update')
-  updateQuality(
-    @Body() updateQualityDto: UpdateQualityDto,
-  ): Promise<ResponseDto<null>> {
+  updateQuality(@Body() updateQualityDto: UpdateQualityDto): Promise<ResponseDto<null>> {
     return this._qualityService.updatedQuality(updateQualityDto);
   }
 
   @Delete('remove/:id')
-  removeQuality(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<ResponseDto<null>> {
+  removeQuality(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
     return this._qualityService.removeQuality(id);
   }
 }

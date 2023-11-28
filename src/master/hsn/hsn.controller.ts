@@ -30,12 +30,7 @@ export class HsnController {
   @Get('')
   getAllHsn(@Query() query: QueryHsnDto): Promise<ResponseDto<HSN[]>> {
     if (query.page) {
-      return this._hsnService.paginateHsn(
-        query.page,
-        query.limit,
-        query.search,
-        query.gst,
-      );
+      return this._hsnService.paginateHsn(query.page, query.limit, query.search, query.gst);
     }
     return this._hsnService.getAllHsn(query.search, query.gst);
   }

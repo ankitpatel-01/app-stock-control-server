@@ -5,11 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  DataFound,
-  NoDataFound,
-  PerPageLimit,
-} from 'src/shared/constant/constant';
+import { DataFound, NoDataFound, PerPageLimit } from 'src/shared/constant/constant';
 import { ER_DUP_ENTRY, ER_DUP_ENTRY_NO } from 'src/shared/constant/error.const';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 
@@ -99,9 +95,7 @@ export class QualityService {
     }
   }
 
-  async createQuality(
-    createQualityDto: CreateQualityDto,
-  ): Promise<ResponseDto<null>> {
+  async createQuality(createQualityDto: CreateQualityDto): Promise<ResponseDto<null>> {
     const type: YarnType = await this.findTypeById(createQualityDto.type);
     try {
       const newQuality: Quality = this._qualityRespository.create({
@@ -124,9 +118,7 @@ export class QualityService {
     }
   }
 
-  async updatedQuality(
-    upadateQualityDto: UpdateQualityDto,
-  ): Promise<ResponseDto<null>> {
+  async updatedQuality(upadateQualityDto: UpdateQualityDto): Promise<ResponseDto<null>> {
     const quality: Quality = await this.findQualityById(upadateQualityDto.id);
     quality.quality_desc = upadateQualityDto.quality_desc;
     quality.type = await this.findTypeById(upadateQualityDto.type);

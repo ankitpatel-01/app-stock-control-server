@@ -28,15 +28,9 @@ export class LocationController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('')
-  getAllLocation(
-    @Query() query: PaginateDto,
-  ): Promise<ResponseDto<Location[]>> {
+  getAllLocation(@Query() query: PaginateDto): Promise<ResponseDto<Location[]>> {
     if (query.page) {
-      return this._locationService.paginateLocation(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._locationService.paginateLocation(query.page, query.limit, query.search);
     }
     return this._locationService.getAllLocation(query.search);
   }

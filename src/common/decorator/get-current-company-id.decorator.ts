@@ -1,11 +1,7 @@
 /*
 https://docs.nestjs.com/openapi/decorators#decorators
 */
-import {
-  BadRequestException,
-  createParamDecorator,
-  ExecutionContext,
-} from '@nestjs/common';
+import { BadRequestException, createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const GetCompanyId = createParamDecorator(
   (data: undefined, context: ExecutionContext): number => {

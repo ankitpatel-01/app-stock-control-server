@@ -5,11 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  DataFound,
-  NoDataFound,
-  PerPageLimit,
-} from 'src/shared/constant/constant';
+import { DataFound, NoDataFound, PerPageLimit } from 'src/shared/constant/constant';
 import { ER_DUP_ENTRY, ER_DUP_ENTRY_NO } from 'src/shared/constant/error.const';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 import { Repository } from 'typeorm';
@@ -24,9 +20,7 @@ export class LocationService {
     private _locationRepository: Repository<Location>,
   ) {}
 
-  async getAllLocation(
-    search: string = null,
-  ): Promise<ResponseDto<Location[]>> {
+  async getAllLocation(search: string = null): Promise<ResponseDto<Location[]>> {
     try {
       const query = this._locationRepository
         .createQueryBuilder('location')
@@ -102,15 +96,10 @@ export class LocationService {
     createLocationDto: CreateLocationDto,
     userId: number,
   ): Promise<ResponseDto<null>> {
-    const existingLocation = await this.findLocationByName(
-      createLocationDto.location_name,
-    );
+    const existingLocation = await this.findLocationByName(createLocationDto.location_name);
 
     if (existingLocation) {
-      return await this.updateExistingLocation(
-        existingLocation,
-        createLocationDto,
-      );
+      return await this.updateExistingLocation(existingLocation, createLocationDto);
     } else {
       return await this.createNewLocation(createLocationDto);
     }
@@ -121,9 +110,7 @@ export class LocationService {
     createLocationDto: CreateLocationDto,
   ): Promise<ResponseDto<null>> {
     if (existingLocation.isActive) {
-      throw new ConflictException(
-        'Duplicate entry Location code already exists',
-      );
+      throw new ConflictException('Duplicate entry Location code already exists');
     } else {
       existingLocation.isActive = 1;
       existingLocation.factory_city = createLocationDto.factory_city;
@@ -169,9 +156,7 @@ export class LocationService {
     updateLocationDto: UpdateLocationDto,
     userId: number,
   ): Promise<ResponseDto<null>> {
-    const location: Location = await this.findLocationById(
-      updateLocationDto.id,
-    );
+    const location: Location = await this.findLocationById(updateLocationDto.id);
     location.factory_city = updateLocationDto.factory_city;
     location.factory_name = updateLocationDto.factory_name;
     location.location_name = updateLocationDto.location_name;

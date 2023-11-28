@@ -21,9 +21,7 @@ export class CategoryService {
     private _categoryRepository: Repository<Category>,
   ) {}
 
-  async getAllCategory(
-    search: string = null,
-  ): Promise<ResponseDto<Category[]>> {
+  async getAllCategory(search: string = null): Promise<ResponseDto<Category[]>> {
     try {
       const query = this._categoryRepository
         .createQueryBuilder('category')
@@ -38,8 +36,7 @@ export class CategoryService {
       const data: Category[] = await query.getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {
@@ -74,8 +71,7 @@ export class CategoryService {
       }
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
         meta: {
           current_page: parseInt(page.toString()),
@@ -89,9 +85,7 @@ export class CategoryService {
     }
   }
 
-  async createCategory(
-    createCategoryDto: CreateCategoryDto,
-  ): Promise<ResponseDto<null>> {
+  async createCategory(createCategoryDto: CreateCategoryDto): Promise<ResponseDto<null>> {
     try {
       const newCategory: Category = this._categoryRepository.create({
         category_desc: createCategoryDto.category_desc,
@@ -113,12 +107,8 @@ export class CategoryService {
     }
   }
 
-  async updateColor(
-    updateCategoryDto: UpdateCategoryDto,
-  ): Promise<ResponseDto<null>> {
-    const category: Category = await this.findCategoryById(
-      updateCategoryDto.id,
-    );
+  async updateColor(updateCategoryDto: UpdateCategoryDto): Promise<ResponseDto<null>> {
+    const category: Category = await this.findCategoryById(updateCategoryDto.id);
     category.category_desc = updateCategoryDto.category_desc;
     category.isActive = 1;
     try {

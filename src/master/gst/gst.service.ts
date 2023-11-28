@@ -23,9 +23,7 @@ export class GstService {
 
   async getAllGST(search: string = null): Promise<ResponseDto<GST[]>> {
     try {
-      const query = this._gstRepository
-        .createQueryBuilder('gst')
-        .where('gst.isActive = 1');
+      const query = this._gstRepository.createQueryBuilder('gst').where('gst.isActive = 1');
 
       if (search) {
         query.andWhere('LOWER(gst.gst_desc) like LOWER(:search)', {
@@ -36,8 +34,7 @@ export class GstService {
       const data: GST[] = await query.orderBy('gst.id', 'DESC').getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {
@@ -53,9 +50,7 @@ export class GstService {
     try {
       let data: GST[], total: number;
 
-      const query = this._gstRepository
-        .createQueryBuilder('gst')
-        .where('gst.isActive = 1');
+      const query = this._gstRepository.createQueryBuilder('gst').where('gst.isActive = 1');
 
       if (search) {
         page = 1;
@@ -76,8 +71,7 @@ export class GstService {
       }
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
         meta: {
           current_page: parseInt(page.toString()),
@@ -111,9 +105,7 @@ export class GstService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry gst description or code already exists',
-        );
+        throw new ConflictException('Duplicate entry gst description or code already exists');
       }
       console.log(err, '');
       throw new InternalServerErrorException('somethings went wrong');
@@ -138,9 +130,7 @@ export class GstService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry gst description or code already exists',
-        );
+        throw new ConflictException('Duplicate entry gst description or code already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }

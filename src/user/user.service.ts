@@ -30,9 +30,7 @@ export class UsersService {
     private _comMasterRepository: Repository<Company>,
   ) {}
 
-  async createNewUser(
-    createUserDto: CreateUserDto,
-  ): Promise<ResponseDto<null>> {
+  async createNewUser(createUserDto: CreateUserDto): Promise<ResponseDto<null>> {
     const hashPassword = await this.hashPassword(createUserDto.password);
     try {
       const newUser: User = this._usersRepository.create({
@@ -56,15 +54,10 @@ export class UsersService {
     }
   }
 
-  async signUpNewUser(
-    signUpUserDto: SignUpUserDto,
-  ): Promise<ResponseDto<null>> {
+  async signUpNewUser(signUpUserDto: SignUpUserDto): Promise<ResponseDto<null>> {
     const hashPassword = await this.hashPassword(signUpUserDto.password);
     const company: Company = await this.findCompanyId(signUpUserDto.companyId);
-    const UserProfile: UserProfile = await this.initNewUserProfile(
-      signUpUserDto,
-      company,
-    );
+    const UserProfile: UserProfile = await this.initNewUserProfile(signUpUserDto, company);
     const fullName = this.generateFullName(
       signUpUserDto.first_name,
       signUpUserDto.last_name,
@@ -94,10 +87,7 @@ export class UsersService {
     }
   }
 
-  async initNewUserProfile(
-    signUpUserDto: SignUpUserDto,
-    company: Company,
-  ): Promise<UserProfile> {
+  async initNewUserProfile(signUpUserDto: SignUpUserDto, company: Company): Promise<UserProfile> {
     try {
       const newProfile: UserProfile = this._userProfileRepository.create({
         first_name: signUpUserDto?.first_name,
@@ -120,9 +110,7 @@ export class UsersService {
     }
   }
 
-  async createNewUserProfile(
-    createUserProfileDto: UserProfileDTO,
-  ): Promise<ResponseDto<null>> {
+  async createNewUserProfile(createUserProfileDto: UserProfileDTO): Promise<ResponseDto<null>> {
     try {
       const newProfile: UserProfile = this._userProfileRepository.create({
         first_name: createUserProfileDto?.first_name,
@@ -156,15 +144,9 @@ export class UsersService {
   async updateUser(updateUserDto: UpdateUserDto): Promise<ResponseDto<null>> {
     const user: User = await this.findUserById(updateUserDto.id);
     user.name = updateUserDto?.name ? updateUserDto?.name : user.name;
-    user.username = updateUserDto?.username
-      ? updateUserDto?.username
-      : user.username;
-    user.password = updateUserDto?.password
-      ? updateUserDto?.password
-      : user.password;
-    user.hashdRt = updateUserDto?.hashdRt
-      ? updateUserDto?.hashdRt
-      : user.hashdRt;
+    user.username = updateUserDto?.username ? updateUserDto?.username : user.username;
+    user.password = updateUserDto?.password ? updateUserDto?.password : user.password;
+    user.hashdRt = updateUserDto?.hashdRt ? updateUserDto?.hashdRt : user.hashdRt;
     user.isActive = 1;
     try {
       const respone = await this._usersRepository.save(user);
@@ -241,11 +223,7 @@ export class UsersService {
     throw new NotFoundException(`company with id ${id} not found`);
   }
 
-  generateFullName(
-    firstName: string,
-    lastName: string,
-    middleName?: string,
-  ): string {
+  generateFullName(firstName: string, lastName: string, middleName?: string): string {
     let fullName = firstName;
     if (middleName) {
       fullName += ` ${middleName}`;

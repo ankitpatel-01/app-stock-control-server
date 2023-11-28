@@ -30,11 +30,7 @@ export class GstController {
   @Get('')
   getAllGST(@Query() query: PaginateDto): Promise<ResponseDto<GST[]>> {
     if (query.page) {
-      return this._gstService.paginateGST(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._gstService.paginateGST(query.page, query.limit, query.search);
     }
     return this._gstService.getAllGST(query.search);
   }

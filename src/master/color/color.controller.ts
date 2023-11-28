@@ -30,33 +30,23 @@ export class ColorController {
   @Get('')
   getAllColor(@Query() query: PaginateDto): Promise<ResponseDto<Color[]>> {
     if (query.page) {
-      return this._colorService.paginateColor(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._colorService.paginateColor(query.page, query.limit, query.search);
     }
     return this._colorService.getAllColor(query.search);
   }
 
   @Post('create')
-  createColor(
-    @Body() createColorDto: CreateColorDto,
-  ): Promise<ResponseDto<null>> {
+  createColor(@Body() createColorDto: CreateColorDto): Promise<ResponseDto<null>> {
     return this._colorService.createColor(createColorDto);
   }
 
   @Put('update')
-  updateColor(
-    @Body() updateColorDto: UpdateColorDto,
-  ): Promise<ResponseDto<null>> {
+  updateColor(@Body() updateColorDto: UpdateColorDto): Promise<ResponseDto<null>> {
     return this._colorService.updateColor(updateColorDto);
   }
 
   @Delete('remove/:id')
-  removeColor(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<ResponseDto<null>> {
+  removeColor(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
     return this._colorService.removeColor(id);
   }
 }

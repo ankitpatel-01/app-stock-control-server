@@ -24,14 +24,9 @@ export class HsnService {
     private _gstRespository: Repository<GST>,
   ) {}
 
-  async getAllHsn(
-    search: string = null,
-    gst: boolean = false,
-  ): Promise<ResponseDto<HSN[]>> {
+  async getAllHsn(search: string = null, gst: boolean = false): Promise<ResponseDto<HSN[]>> {
     try {
-      const query = this._hsnRespository
-        .createQueryBuilder('hsn')
-        .where('hsn.isActive = 1');
+      const query = this._hsnRespository.createQueryBuilder('hsn').where('hsn.isActive = 1');
 
       if (gst) {
         query
@@ -53,8 +48,7 @@ export class HsnService {
       const data: HSN[] = await query.addOrderBy('hsn.id', 'DESC').getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {
@@ -71,9 +65,7 @@ export class HsnService {
     try {
       let data: HSN[], total: number;
 
-      const query = this._hsnRespository
-        .createQueryBuilder('hsn')
-        .where('hsn.isActive = 1');
+      const query = this._hsnRespository.createQueryBuilder('hsn').where('hsn.isActive = 1');
 
       if (gst) {
         query
@@ -94,9 +86,7 @@ export class HsnService {
       }
 
       if (page == -1) {
-        [data, total] = await query
-          .addOrderBy('hsn.id', 'ASC')
-          .getManyAndCount();
+        [data, total] = await query.addOrderBy('hsn.id', 'ASC').getManyAndCount();
       } else {
         const skip = (page - 1) * limit;
         [data, total] = await query
@@ -107,8 +97,7 @@ export class HsnService {
       }
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
         meta: {
           current_page: parseInt(page.toString()),

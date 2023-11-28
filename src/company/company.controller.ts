@@ -37,9 +37,7 @@ export class CompanyController {
   }
 
   @Get('company-branch')
-  getCompanyBranches(
-    @GetCompanyId() cmpdbId: number,
-  ): Promise<ResponseDto<CompanyBranch[]>> {
+  getCompanyBranches(@GetCompanyId() cmpdbId: number): Promise<ResponseDto<CompanyBranch[]>> {
     return this._companyService.getCompanyBranchesList(cmpdbId);
   }
 

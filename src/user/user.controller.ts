@@ -15,16 +15,12 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get('profile')
-  getUserProfile(
-    @GetCurrentUserId() userId: number,
-  ): Promise<ResponseDto<UserProfile>> {
+  getUserProfile(@GetCurrentUserId() userId: number): Promise<ResponseDto<UserProfile>> {
     return this.userService.getProfileDetails(userId);
   }
 
   @Post('create')
-  createNewUser(
-    @Body() createUserDto: CreateUserDto,
-  ): Promise<ResponseDto<null>> {
+  createNewUser(@Body() createUserDto: CreateUserDto): Promise<ResponseDto<null>> {
     return this.userService.createNewUser(createUserDto);
   }
 

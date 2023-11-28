@@ -35,17 +35,12 @@ export class CompanyService {
    */
   async getAllCompanyType(): Promise<ResponseDto<CompanyType[]>> {
     try {
-      const query = this._comTypeRepository
-        .createQueryBuilder('ctype')
-        .where('ctype.isActive = 1');
+      const query = this._comTypeRepository.createQueryBuilder('ctype').where('ctype.isActive = 1');
 
-      const data: CompanyType[] = await query
-        .addOrderBy('ctype.id', 'ASC')
-        .getMany();
+      const data: CompanyType[] = await query.addOrderBy('ctype.id', 'ASC').getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {
@@ -60,15 +55,10 @@ export class CompanyService {
    * @returns {Promise<ResponseDto<number>>} A response DTO containing a message and a response number (1 or 2).
    * @throws {InternalServerErrorException} If there is an error creating the company, branch, or user in the database.
    */
-  async signUpNewComapny(
-    signUpCompanyDto: SignUpDto,
-  ): Promise<ResponseDto<number>> {
+  async signUpNewComapny(signUpCompanyDto: SignUpDto): Promise<ResponseDto<number>> {
     const { company_details, user_details } = signUpCompanyDto;
-    const { address_details, contact_details, taxation_details, bank_details } =
-      company_details;
-    const compantType: CompanyType = await this.findCompanyTypeById(
-      company_details.company_type,
-    );
+    const { address_details, contact_details, taxation_details, bank_details } = company_details;
+    const compantType: CompanyType = await this.findCompanyTypeById(company_details.company_type);
     try {
       const NewCompany: Company = this._comMasterRepository.create({
         company_name: company_details?.company_name,
@@ -102,34 +92,33 @@ export class CompanyService {
 
       const savedComapny = await this._comMasterRepository.save(NewCompany);
 
-      const newCompanyBranch: CompanyBranch =
-        this._comBranchMasterRepository.create({
-          name: company_details?.company_name,
-          address1: address_details?.address1,
-          address2: address_details?.address2,
-          address3: address_details?.address3,
-          country_id: address_details?.country_id,
-          state_id: address_details?.state_id,
-          city: address_details?.city_name,
-          pinCode: address_details?.pincode,
-          mobile1: contact_details?.mobile1,
-          mobile2: contact_details?.mobile2,
-          tel_no: contact_details?.tel_no,
-          fax_no: contact_details?.fax_no,
-          email: contact_details?.email,
-          website: contact_details.website,
-          pan_no: taxation_details?.pan_no,
-          gst_no: taxation_details?.gst_no,
-          cin_no: taxation_details?.cin_no,
-          opening_date: taxation_details?.opening_date,
-          from_date: taxation_details?.from_date,
-          to_date: taxation_details?.to_date,
-          bank_name: bank_details?.bank_name,
-          bank_branch_name: bank_details?.branch_name,
-          ifsc_code: bank_details?.ifsc_code,
-          account_no: bank_details?.account_no,
-          company: savedComapny,
-        });
+      const newCompanyBranch: CompanyBranch = this._comBranchMasterRepository.create({
+        name: company_details?.company_name,
+        address1: address_details?.address1,
+        address2: address_details?.address2,
+        address3: address_details?.address3,
+        country_id: address_details?.country_id,
+        state_id: address_details?.state_id,
+        city: address_details?.city_name,
+        pinCode: address_details?.pincode,
+        mobile1: contact_details?.mobile1,
+        mobile2: contact_details?.mobile2,
+        tel_no: contact_details?.tel_no,
+        fax_no: contact_details?.fax_no,
+        email: contact_details?.email,
+        website: contact_details.website,
+        pan_no: taxation_details?.pan_no,
+        gst_no: taxation_details?.gst_no,
+        cin_no: taxation_details?.cin_no,
+        opening_date: taxation_details?.opening_date,
+        from_date: taxation_details?.from_date,
+        to_date: taxation_details?.to_date,
+        bank_name: bank_details?.bank_name,
+        bank_branch_name: bank_details?.branch_name,
+        ifsc_code: bank_details?.ifsc_code,
+        account_no: bank_details?.account_no,
+        company: savedComapny,
+      });
 
       await this._comBranchMasterRepository.save(newCompanyBranch);
 
@@ -213,20 +202,11 @@ export class CompanyService {
    * @throws {InternalServerErrorException} - If there is an error in the database query
    * @returns {Promise<ResponseDto<CompanyBranch[]>>} - A promise that resolves to an object containing the message and the response data
    */
-  async getCompanyBranchesList(
-    id: number,
-  ): Promise<ResponseDto<CompanyBranch[]>> {
+  async getCompanyBranchesList(id: number): Promise<ResponseDto<CompanyBranch[]>> {
     try {
       const query = this._comBranchMasterRepository
         .createQueryBuilder('cb')
-        .select([
-          'cb.id',
-          'cb.name',
-          'cb.address1',
-          'cb.address2',
-          'cb.address3',
-          'cb.city',
-        ])
+        .select(['cb.id', 'cb.name', 'cb.address1', 'cb.address2', 'cb.address3', 'cb.city'])
         .where('cb.isActive = 1')
         .andWhere(`cb.company_id = :id`, { id: id })
         .orderBy('cb.id', 'ASC');
@@ -234,8 +214,7 @@ export class CompanyService {
       const data: CompanyBranch[] = await query.getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {

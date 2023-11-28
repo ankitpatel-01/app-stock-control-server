@@ -5,11 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  DataFound,
-  NoDataFound,
-  PerPageLimit,
-} from 'src/shared/constant/constant';
+import { DataFound, NoDataFound, PerPageLimit } from 'src/shared/constant/constant';
 import { ER_DUP_ENTRY, ER_DUP_ENTRY_NO } from 'src/shared/constant/error.const';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 import { Repository } from 'typeorm';
@@ -26,9 +22,7 @@ export class UnitService {
 
   async getAllUnit(search: string = null): Promise<ResponseDto<Unit[]>> {
     try {
-      const query = this._unitRepository
-        .createQueryBuilder('unit')
-        .where('unit.isActive = 1');
+      const query = this._unitRepository.createQueryBuilder('unit').where('unit.isActive = 1');
 
       if (search) {
         query
@@ -59,9 +53,7 @@ export class UnitService {
     try {
       let data: Unit[], total: number;
 
-      const query = this._unitRepository
-        .createQueryBuilder('unit')
-        .where('unit.isActive = 1');
+      const query = this._unitRepository.createQueryBuilder('unit').where('unit.isActive = 1');
 
       if (search) {
         page = 1;
@@ -96,10 +88,7 @@ export class UnitService {
     }
   }
 
-  async createUnit(
-    createUnitDto: CreateUnitDto,
-    userId: number,
-  ): Promise<ResponseDto<null>> {
+  async createUnit(createUnitDto: CreateUnitDto, userId: number): Promise<ResponseDto<null>> {
     const existingUnit = await this.findUnitByName(createUnitDto.unit_name);
 
     if (existingUnit) {
@@ -130,9 +119,7 @@ export class UnitService {
     }
   }
 
-  private async createNewUnit(
-    createUnitDto: CreateUnitDto,
-  ): Promise<ResponseDto<null>> {
+  private async createNewUnit(createUnitDto: CreateUnitDto): Promise<ResponseDto<null>> {
     try {
       const newUnit = this._unitRepository.create({
         unit_name: createUnitDto.unit_name,
@@ -149,18 +136,13 @@ export class UnitService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry unit description or code already exists',
-        );
+        throw new ConflictException('Duplicate entry unit description or code already exists');
       }
       throw new InternalServerErrorException('Something went wrong');
     }
   }
 
-  async updateUnit(
-    updateUnitDto: UpdateUnitDto,
-    userId: number,
-  ): Promise<ResponseDto<null>> {
+  async updateUnit(updateUnitDto: UpdateUnitDto, userId: number): Promise<ResponseDto<null>> {
     const unit: Unit = await this.findUnitById(updateUnitDto.id);
     unit.unit_desc = updateUnitDto.unit_desc;
     unit.unit_name = updateUnitDto.unit_name;
@@ -175,9 +157,7 @@ export class UnitService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry unit description or code already exists',
-        );
+        throw new ConflictException('Duplicate entry unit description or code already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }

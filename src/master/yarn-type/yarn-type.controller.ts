@@ -36,11 +36,7 @@ export class YarnTypeController {
   })
   getYarnType(@Query() query: PaginateDto): Promise<ResponseDto<YarnType[]>> {
     if (query.page) {
-      return this._yarnTypeService.paginateYarnType(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._yarnTypeService.paginateYarnType(query.page, query.limit, query.search);
     }
     return this._yarnTypeService.findAllYarnType(query.search);
   }
@@ -52,9 +48,7 @@ export class YarnTypeController {
     type: null,
     isArray: false,
   })
-  createYarnType(
-    @Body() createYarnTypeDto: CreateYarnTypeDto,
-  ): Promise<ResponseDto<null>> {
+  createYarnType(@Body() createYarnTypeDto: CreateYarnTypeDto): Promise<ResponseDto<null>> {
     return this._yarnTypeService.createYarnType(createYarnTypeDto);
   }
 
@@ -65,9 +59,7 @@ export class YarnTypeController {
     type: null,
     isArray: false,
   })
-  updateYarnType(
-    @Body() updateYarnTypeDto: UpdateYarnTypeDto,
-  ): Promise<ResponseDto<null>> {
+  updateYarnType(@Body() updateYarnTypeDto: UpdateYarnTypeDto): Promise<ResponseDto<null>> {
     return this._yarnTypeService.updateYarnType(updateYarnTypeDto);
   }
 
@@ -78,9 +70,7 @@ export class YarnTypeController {
     type: null,
     isArray: false,
   })
-  removeYarnType(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<ResponseDto<null>> {
+  removeYarnType(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
     return this._yarnTypeService.removeYarnType(id);
   }
 }

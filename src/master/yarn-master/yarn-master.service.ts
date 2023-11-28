@@ -5,11 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  DataFound,
-  NoDataFound,
-  PerPageLimit,
-} from 'src/shared/constant/constant';
+import { DataFound, NoDataFound, PerPageLimit } from 'src/shared/constant/constant';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 
 import { Repository } from 'typeorm';
@@ -71,9 +67,7 @@ export class YarnMasterService {
           });
       }
 
-      const data: YarnMaster[] = await query
-        .addOrderBy('yarn.id', 'DESC')
-        .getMany();
+      const data: YarnMaster[] = await query.addOrderBy('yarn.id', 'DESC').getMany();
 
       return {
         message: data.length == 0 ? NoDataFound : DataFound,
@@ -147,16 +141,10 @@ export class YarnMasterService {
 
   async createYarn(createYarnDto: CreateYarnDto): Promise<ResponseDto<null>> {
     try {
-      const type: YarnType = await this.findYarnTypeById(
-        createYarnDto.yarn_type_id,
-      );
-      const quality: Quality = await this.findQualityById(
-        createYarnDto.quality_id,
-      );
+      const type: YarnType = await this.findYarnTypeById(createYarnDto.yarn_type_id);
+      const quality: Quality = await this.findQualityById(createYarnDto.quality_id);
       const color: Color = await this.findColorById(createYarnDto.color_id);
-      const category: Category = await this.findCategoryById(
-        createYarnDto.ctgr_id,
-      );
+      const category: Category = await this.findCategoryById(createYarnDto.ctgr_id);
       const group: YarnGroup = await this.findGroupById(createYarnDto.group_id);
       const hsn: HSN = await this.findHsnById(createYarnDto.hsn_id);
 
@@ -189,9 +177,7 @@ export class YarnMasterService {
       }
     } catch (err) {
       if (err.code === 'ER_DUP_ENTRY' && err.errno === 1062) {
-        throw new ConflictException(
-          'Duplicate entry yarn code or yarn description already exists',
-        );
+        throw new ConflictException('Duplicate entry yarn code or yarn description already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }
@@ -199,16 +185,10 @@ export class YarnMasterService {
 
   async updateYarn(updateYarnDto: UpdateYarnDto): Promise<ResponseDto<null>> {
     try {
-      const type: YarnType = await this.findYarnTypeById(
-        updateYarnDto.yarn_type_id,
-      );
-      const quality: Quality = await this.findQualityById(
-        updateYarnDto.quality_id,
-      );
+      const type: YarnType = await this.findYarnTypeById(updateYarnDto.yarn_type_id);
+      const quality: Quality = await this.findQualityById(updateYarnDto.quality_id);
       const color: Color = await this.findColorById(updateYarnDto.color_id);
-      const category: Category = await this.findCategoryById(
-        updateYarnDto.ctgr_id,
-      );
+      const category: Category = await this.findCategoryById(updateYarnDto.ctgr_id);
       const group: YarnGroup = await this.findGroupById(updateYarnDto.group_id);
       const hsn: HSN = await this.findHsnById(updateYarnDto.hsn_id);
 
@@ -242,9 +222,7 @@ export class YarnMasterService {
       }
     } catch (err) {
       if (err.code === 'ER_DUP_ENTRY' && err.errno === 1062) {
-        throw new ConflictException(
-          'Duplicate entry yarn code or yarn description already exists',
-        );
+        throw new ConflictException('Duplicate entry yarn code or yarn description already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }

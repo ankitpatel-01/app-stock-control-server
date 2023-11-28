@@ -33,9 +33,7 @@ export class StatesMasterController {
   }
 
   @Post('create')
-  createYarnType(
-    @Body() createStateDto: CreateStateDto,
-  ): Promise<ResponseDto<null>> {
+  createYarnType(@Body() createStateDto: CreateStateDto): Promise<ResponseDto<null>> {
     return this._statesMasterService.addNewState(createStateDto);
   }
 }

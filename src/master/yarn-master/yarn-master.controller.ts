@@ -30,11 +30,7 @@ export class YarnMasterController {
   @Get('')
   getAllYarn(@Query() query: PaginateDto): Promise<ResponseDto<YarnMaster[]>> {
     if (query.page) {
-      return this._yarnMasterService.paginateYarn(
-        query.page,
-        query.limit,
-        query.search,
-      );
+      return this._yarnMasterService.paginateYarn(query.page, query.limit, query.search);
     }
     return this._yarnMasterService.findAllYarn(query.search);
   }
@@ -50,9 +46,7 @@ export class YarnMasterController {
   }
 
   @Delete('remove/:id')
-  removeYarn(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<ResponseDto<null>> {
+  removeYarn(@Param('id', ParseIntPipe) id: number): Promise<ResponseDto<null>> {
     return this._yarnMasterService.removeYarn(id);
   }
 }

@@ -21,9 +21,7 @@ export class YarnGroupService {
     private _yarnGroupRepository: Repository<YarnGroup>,
   ) {}
 
-  async getAllYarnGroup(
-    search: string = null,
-  ): Promise<ResponseDto<YarnGroup[]>> {
+  async getAllYarnGroup(search: string = null): Promise<ResponseDto<YarnGroup[]>> {
     try {
       const query = this._yarnGroupRepository
         .createQueryBuilder('yarnGroup')
@@ -38,8 +36,7 @@ export class YarnGroupService {
       const data: YarnGroup[] = await query.getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {
@@ -74,8 +71,7 @@ export class YarnGroupService {
       }
 
       return {
-        message:
-          data.length === 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length === 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
         meta: {
           current_page: parseInt(page.toString()),
@@ -89,9 +85,7 @@ export class YarnGroupService {
     }
   }
 
-  async createYarnGroup(
-    createYarnGroupDto: CreateYarnGroupDto,
-  ): Promise<ResponseDto<null>> {
+  async createYarnGroup(createYarnGroupDto: CreateYarnGroupDto): Promise<ResponseDto<null>> {
     try {
       const newYarnGroup: YarnGroup = this._yarnGroupRepository.create({
         yarn_grp_name: createYarnGroupDto.yarn_grp_name,
@@ -107,20 +101,14 @@ export class YarnGroupService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry yarn group already exists',
-        );
+        throw new ConflictException('Duplicate entry yarn group already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }
   }
 
-  async updateYarnGroup(
-    updateYarnGroupDto: UpdateYarnGroupDto,
-  ): Promise<ResponseDto<null>> {
-    const yarnGroup: YarnGroup = await this.findYarnGroupById(
-      updateYarnGroupDto.id,
-    );
+  async updateYarnGroup(updateYarnGroupDto: UpdateYarnGroupDto): Promise<ResponseDto<null>> {
+    const yarnGroup: YarnGroup = await this.findYarnGroupById(updateYarnGroupDto.id);
     yarnGroup.yarn_grp_name = updateYarnGroupDto.yarn_grp_name;
     yarnGroup.isActive = 1;
     try {
@@ -133,9 +121,7 @@ export class YarnGroupService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry yarn group already exists',
-        );
+        throw new ConflictException('Duplicate entry yarn group already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }

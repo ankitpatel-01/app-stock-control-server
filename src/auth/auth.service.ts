@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/user/user.service';
@@ -22,10 +18,7 @@ export class AuthService {
    * @param _userService The UsersService instance to use.
    * @param _jwtService The JwtService instance to use.
    */
-  constructor(
-    private readonly _userService: UsersService,
-    private _jwtService: JwtService,
-  ) {}
+  constructor(private readonly _userService: UsersService, private _jwtService: JwtService) {}
 
   /**
    * Authenticates a user and returns access and refresh tokens.

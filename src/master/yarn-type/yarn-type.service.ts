@@ -20,9 +20,7 @@ export class YarnTypeService {
     private _yarnTypeRepository: Repository<YarnType>,
   ) {}
 
-  async findAllYarnType(
-    search: string = null,
-  ): Promise<ResponseDto<YarnType[]>> {
+  async findAllYarnType(search: string = null): Promise<ResponseDto<YarnType[]>> {
     try {
       const query = this._yarnTypeRepository
         .createQueryBuilder('yarn_type')
@@ -34,13 +32,10 @@ export class YarnTypeService {
         });
       }
 
-      const data: YarnType[] = await query
-        .addOrderBy('yarn_type.id', 'ASC')
-        .getMany();
+      const data: YarnType[] = await query.addOrderBy('yarn_type.id', 'ASC').getMany();
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
       };
     } catch (err) {
@@ -79,8 +74,7 @@ export class YarnTypeService {
       }
 
       return {
-        message:
-          data.length == 0 ? 'No data found.' : 'data found sucessfully.',
+        message: data.length == 0 ? 'No data found.' : 'data found sucessfully.',
         response: data,
         meta: {
           current_page: parseInt(page.toString()),
@@ -94,9 +88,7 @@ export class YarnTypeService {
     }
   }
 
-  async createYarnType(
-    createYarnTypeDto: CreateYarnTypeDto,
-  ): Promise<ResponseDto<null>> {
+  async createYarnType(createYarnTypeDto: CreateYarnTypeDto): Promise<ResponseDto<null>> {
     try {
       const newYarnType: YarnType = this._yarnTypeRepository.create({
         type_desc: createYarnTypeDto.type_desc,
@@ -113,20 +105,14 @@ export class YarnTypeService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry yarn description or type already exists',
-        );
+        throw new ConflictException('Duplicate entry yarn description or type already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }
   }
 
-  async updateYarnType(
-    updateYarnTypeDto: UpdateYarnTypeDto,
-  ): Promise<ResponseDto<null>> {
-    const yarnType: YarnType = await this.findYarnTypeById(
-      updateYarnTypeDto.id,
-    );
+  async updateYarnType(updateYarnTypeDto: UpdateYarnTypeDto): Promise<ResponseDto<null>> {
+    const yarnType: YarnType = await this.findYarnTypeById(updateYarnTypeDto.id);
     yarnType.type_desc = updateYarnTypeDto.type_desc;
     yarnType.count_type = updateYarnTypeDto.count_type;
     yarnType.type = updateYarnTypeDto.type;
@@ -141,9 +127,7 @@ export class YarnTypeService {
       }
     } catch (err) {
       if (err.code === ER_DUP_ENTRY && err.errno === ER_DUP_ENTRY_NO) {
-        throw new ConflictException(
-          'Duplicate entry yarn description or type already exists',
-        );
+        throw new ConflictException('Duplicate entry yarn description or type already exists');
       }
       throw new InternalServerErrorException('somethings went wrong');
     }
