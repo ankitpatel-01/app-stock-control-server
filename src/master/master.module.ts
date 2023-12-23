@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
 import { Quality } from './entities/quality.entity';
 import { YarnType } from './entities/yarn-type.entity';
-import { MasterController } from './master.controller';
 import { QualityController } from './quality/quality.controller';
 import { QualityService } from './quality/quality.service';
 import { YarnTypeController } from './yarn-type/yarn-type.controller';
@@ -26,6 +25,16 @@ import { GST } from './entities/gst.entity';
 import { YarnMasterController } from './yarn-master/yarn-master.controller';
 import { YarnMasterService } from './yarn-master/yarn-master.service';
 import { YarnMaster } from './entities/yarn.entity';
+import { Unit } from './entities/unit.entity';
+import { Location } from './entities/location.entity';
+import { UnitController } from './unit/unit.controller';
+import { LocationController } from './location/location.controller';
+import { UserModule } from 'src/user/user.module';
+import { LocationService } from './location/location.service';
+import { UnitService } from './unit/unit.service';
+import { ItemGroupController } from './item-group/item-group.controller';
+import { ItemGroupService } from './item-group/item-group.service';
+import { ItemGroup } from './entities/item-group.entity';
 
 const EntityList: EntityClassOrSchema[] = [
   YarnType,
@@ -36,12 +45,14 @@ const EntityList: EntityClassOrSchema[] = [
   GST,
   HSN,
   YarnMaster,
-]
+  Unit,
+  Location,
+  ItemGroup,
+];
 
 @Module({
-  imports: [TypeOrmModule.forFeature(EntityList)],
+  imports: [TypeOrmModule.forFeature(EntityList), UserModule],
   controllers: [
-    MasterController,
     YarnTypeController,
     QualityController,
     ColorController,
@@ -50,6 +61,9 @@ const EntityList: EntityClassOrSchema[] = [
     HsnController,
     GstController,
     YarnMasterController,
+    UnitController,
+    LocationController,
+    ItemGroupController,
   ],
   providers: [
     YarnTypeService,
@@ -59,7 +73,10 @@ const EntityList: EntityClassOrSchema[] = [
     YarnGroupService,
     HsnService,
     GstService,
-    YarnMasterService
-  ]
+    YarnMasterService,
+    UnitService,
+    LocationService,
+    ItemGroupService,
+  ],
 })
-export class MasterModule { }
+export class MasterModule {}

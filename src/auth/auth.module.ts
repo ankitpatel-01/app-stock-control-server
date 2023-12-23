@@ -7,11 +7,13 @@ import { AuthService } from './auth.service';
 import { jwtConstants } from './constant/constant';
 import { AtStrategiest } from './strategies/at.strategies';
 import { RtStrategiest } from './strategies/rt.strategies';
+import { CompanyModule } from 'src/company/company.module';
 
 @Module({
   controllers: [AuthController],
   imports: [
     UserModule,
+    CompanyModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
@@ -21,4 +23,4 @@ import { RtStrategiest } from './strategies/rt.strategies';
   providers: [AuthService, AtStrategiest, RtStrategiest],
   exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

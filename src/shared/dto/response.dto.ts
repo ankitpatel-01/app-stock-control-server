@@ -1,12 +1,22 @@
-export class ResponseDto<T> {
-    message: string;
-    response: T;
-    meta?: PaginationMetaData;
-}
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class PaginationMetaData {
-    current_page: number;
-    total_pages: number;
-    per_page: number;
-    total_items: number;
+  @ApiProperty()
+  current_page: number;
+  @ApiProperty()
+  total_pages: number;
+  @ApiProperty()
+  per_page: number;
+  @ApiProperty()
+  total_items: number;
+}
+export class ResponseDto<T> {
+  @ApiProperty()
+  message: string;
+
+  @ApiProperty()
+  response: T;
+
+  @ApiPropertyOptional()
+  meta?: PaginationMetaData;
 }
